@@ -1,6 +1,6 @@
-import { auth, users, files } from './routes'
+import { auth, users, files, global } from './routes'
 
-export const handlers = [...auth, ...users, ...files]
+export const handlers = [...auth, ...users, ...files, ...global]
 
 export const storybookHandlers = {
   auth,

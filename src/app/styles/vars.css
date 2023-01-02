@@ -1,6 +1,23 @@
 :root {
-    --primary: 140 0 250;
-    --secondary: 73 146 255;
+    --background: 244 244 243;
+    --surface: 255 255 255;
+    --primary: 255 102 51;
+    --secondary: 112 192 91;
+    --background-text: 41 30 15;
+    --surface-text: 65 65 65;
+    --primary-text: 255 255 255;
+    --secondary-text: 255 255 255;
+    --ligtest: 243 242 241;
+    --light: 191 191 191;
+    --hard: 143 143 143;
+    --hardest: 96 96 96;
+    --success: 0 140 73;
+    --info: 28 185 252;
+    --warning: 255 162 28;
+    --error: 216 0 0;
+
+
+
     --gray: 140 144 171;
     --lines: 232 229 250;
     --background-primary: 255 255 255;
@@ -14,22 +31,4 @@
     --green: 73 235 16;
     --skeleton: 244 245 255;
     --skeleton-highlight: 235 238 254;
-  }
-  
-  .dark {
-    --primary: 87 93 255;
-    --secondary: 255 28 110;
-    --gray: 140 144 171;
-    --lines: 43 43 51;
-    --background-primary: 14 9 26;
-    --background-secondary: 24 23 40;
-    --background-hover: 33 31 47;
-    --red: 214 61 134;
-    --white: 255 255 255;
-    --button-press-primary: 53 59 194;
-    --button-press-secondary: 172 0 62;
-    --orange: 235 173 16;
-    --green: 73 235 16;
-    --skeleton: 33 31 47;
-    --skeleton-highlight: 52 54 80;
-  }
+}

@@ -16,7 +16,7 @@ export default function Document() {
           rel='stylesheet'
         />
       </Head>
-      <body className='bg-background-primary min-w-base'>
+      <body className='bg-[#FBF8EC]'>
         <Main />
         <NextScript />
       </body>

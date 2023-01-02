@@ -33,6 +33,9 @@ const baseConfig = {
     })
     return config
   },
+  images: {
+    domains: ['images.unsplash.com'],
+  },
 }
 
 module.exports = withPWA({ ...baseConfig, baseConfig })

@@ -31,7 +31,7 @@ export interface BaseEntity {
 
 export interface CollectionResponse<T> {
   countOfPages: number
-  items: T[]
+  data: T[]
   itemsPerPage: number
   totalItems: number
 }
@@ -41,6 +41,7 @@ export interface FileModel extends BaseEntity {
   path: string
   isFullPath: boolean
   loading?: boolean
+  url?: string
 }
 
 export interface SelectOption {

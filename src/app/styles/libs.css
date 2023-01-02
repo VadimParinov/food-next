@@ -189,4 +189,47 @@
 }
 /* End Custom Date Range Picker styles */
 
+/* Start Custom numeric input styles */
+input.counter ~ b {
+  background-color: #70C05B !important;
+  outline: none;
+  width: 35px !important;
+  height: 35px;
+  right: 0 !important;
+  border: none;
+  padding: 0;
+  top: 50% !important;
+  bottom: 0;
+  transform: translateY(-50%);
+  cursor: pointer !important;
+  border: none !important;
+  border-radius: 0 !important;
+  color: #fff !important;
+
+}
+
+input.counter span {
+  height: 35px;
+}
+
+
+.counter ~ b > i {
+  background-color: #fff !important;
+}
+.counter ~ b:hover {
+  background-color: #fff !important;
+}
+.counter ~ b:hover > i {
+  background-color: #fff !important;
+}
+input.counter  {
+  background: #70C05B !important;
+  color: #ffffff;
+  border: none !important;
+  border-radius: 0;
+  outline: none;
+  height: 35px;
+  width: 125px;
+
+}
 

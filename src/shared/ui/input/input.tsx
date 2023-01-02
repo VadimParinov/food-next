@@ -37,21 +37,19 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
       >
         <label
           htmlFor={name}
-          className={cn('group-hover:text-primary', {
-            'text-gray': !isFocused,
-            'text-primary': isFocused,
-            '!text-red group-hover:text-red': error,
+          className={cn('text-hard', {
+            '!text-error group-hover:text-error': error,
             'group-hover:text-gray': rest.disabled,
           })}
         >
           {label}
         </label>
         <div
-          className={cn('flex items-center h-10 rounded-base px-4 gap-base border bg-background-hover', {
-            'border-primary': isFocused,
+          className={cn('flex items-center h-10 rounded-base px-4 gap-base border bg-surface border-light', {
+            '!border-secondary': isFocused,
             'border-transparent': !isFocused,
-            '!bg-transparent border-background-hover': rest.disabled,
-            '!border-red': error,
+            '!bg-ligtest ': rest.disabled,
+            '!border-error': error,
           })}
         >
           <input
@@ -61,11 +59,11 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             name={name}
             type={isOpen ? 'text' : type}
             className={cn(
-              `focus:outline-none w-full caret-primary hover:text-primary
-                text-white focus:text-white bg-background-hover disabled:bg-transparent
+              `focus:outline-none w-full
+                text-white caret-secondary focus:text-white bg-surface disabled:bg-ligtest
                 border border-transparent disabled:cursor-not-allowed disabled:text-gray disabled:group-hover:text-gray`,
               {
-                'group-hover:text-red focus:text-red caret-red': error,
+                'group-hover:text-error focus:text-error caret-error': error,
               }
             )}
             onFocus={e => {
