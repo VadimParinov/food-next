@@ -192,7 +192,7 @@
 /* Start Custom numeric input styles */
 input.counter ~ b {
   background-color: #70C05B !important;
-  outline: none;
+  outline: none!important;
   width: 35px !important;
   height: 35px;
   right: 0 !important;
@@ -216,9 +216,7 @@ input.counter span {
 .counter ~ b > i {
   background-color: #fff !important;
 }
-.counter ~ b:hover {
-  background-color: #fff !important;
-}
+
 .counter ~ b:hover > i {
   background-color: #fff !important;
 }

@@ -9,7 +9,7 @@ import { withProviders } from './providers'
 import { useAfterMountEffect } from '@/shared/hooks'
 import { AppPropsWithLayout } from '@/shared/@types'
 import { Header } from '@/widgets/header'
-import { cartAtom } from '@/entities/cart'
+import { cartAtom, getCartFromStorage } from '@/entities/cart'
 import { useUpdateAtom } from 'jotai/utils'
 
 NProgress.configure({ showSpinner: false })
@@ -20,7 +20,7 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
   const setCart = useUpdateAtom(cartAtom)
 
   useEffect(() => {
-    setCart(localStorage.getItem('cart') ? JSON.parse(localStorage.getItem('cart') as string) : [])
+    setCart(getCartFromStorage())
     router.events.on('routeChangeStart', NProgress.start)
     router.events.on('routeChangeComplete', NProgress.done)
     router.events.on('routeChangeError', NProgress.done)

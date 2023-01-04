@@ -34,7 +34,7 @@ const baseConfig = {
     return config
   },
   images: {
-    domains: ['images.unsplash.com'],
+    domains: ['images.unsplash.com', '192.168.0.165'],
   },
 }
 
