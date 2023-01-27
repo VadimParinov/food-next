@@ -29,6 +29,20 @@ export const normalizeSelectOptions = <T extends {}[]>(
   ]
 }
 
+export const normalizeStrapiFilters = (filters: Record<string, unknown>): Record<string, unknown> => {
+  return {
+    filters: {
+      manufacturer: {
+        name: {
+          $eq: filters.manufacturer,
+        },
+      },
+    },
+    'pagination[page]': filters['pagination[page]'],
+    'pagination[pageSize]': filters['pagination[pageSize]'],
+  }
+}
+
 export const normalizeSelectOptionsFromConstantsKeysArray = (constants: string[], t: TFunction): SelectOption[] =>
   constants.map((constant, index) => ({ id: index, label: t(constant) }))
 

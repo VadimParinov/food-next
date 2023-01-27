@@ -1,15 +1,26 @@
 import Head from 'next/head'
 import { API_MOCKING } from '@/shared/config'
-import { AppPropsWithLayout } from '@/shared/@types'
+import { AppPropsWithLayout, Category, StrapiResponse } from '@/shared/@types'
 import App from '@/app'
 //Next.js требует импортировать глобальные стили только в _app.tsx
 import '@/app/index.css'
+import NextApp, { AppContext, AppProps } from 'next/app'
+import { httpClient } from '@/shared/lib'
 
 if (API_MOCKING === 'enabled') {
   require('@/app/mocks-server')
 }
 
-const _App = (props: AppPropsWithLayout) => {
+export interface GlobalData {
+  globalData: {
+    categories: {
+      data: Category[]
+    }
+  }
+  siteName: string
+}
+
+const _App = (props: AppProps<GlobalData>) => {
   return (
     <>
       <Head>
@@ -20,14 +31,26 @@ const _App = (props: AppPropsWithLayout) => {
   )
 }
 
-// This disables the ability to perform automatic static optimization,
-// causing every page in your app to be server-side rendered.
-// Если не нужно подтягивать одинаковые данные для каждой страницы, то метод стоит убрать
-// _App.getInitialProps = async (appContext: AppContext) => {
-//   const appProps = await NextApp.getInitialProps(appContext)
-//   return {
-//     ...appProps,
-//   }
-// }
+_App.getInitialProps = async (appContext: AppContext) => {
+  const appProps = await NextApp.getInitialProps(appContext)
+  const {
+    data: {
+      data: { attributes },
+    },
+  } = await httpClient<StrapiResponse<GlobalData>>({
+    url: '/global',
+    params: {
+      populate: ['categories'],
+      locale: appContext.ctx.locale,
+    },
+  })
+
+  return {
+    ...appProps,
+    pageProps: {
+      globalData: attributes,
+    },
+  }
+}
 
 export default _App

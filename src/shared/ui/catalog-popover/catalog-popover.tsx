@@ -2,8 +2,13 @@ import React, { FC, Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { Button } from '@/shared/ui'
 import Link from 'next/link'
+import { Category } from '@/shared/@types'
 
-export const CatalogPopover: FC = () => {
+interface CatalogPopoverProps {
+  categories: Category[]
+}
+
+export const CatalogPopover: FC<CatalogPopoverProps> = ({ categories }) => {
   return (
     <Popover className='relative'>
       <Popover.Button as={Fragment}>
@@ -33,36 +38,11 @@ export const CatalogPopover: FC = () => {
         <Popover.Panel className='absolute top-16 z-50'>
           <div className='bg-surface shadow-md rounded-md'>
             <div className='flex flex-col flex-wrap max-h-[300px] w-[500px] gap-y-4 p-4'>
-              <Link href='/category/1'>
-                <a className='text-md text-gray'>Категория 2</a>
-              </Link>
-              <Link href='/category/1'>
-                <a className='text-md text-gray'>Категория 2</a>
-              </Link>
-              <Link href='/category/1'>
-                <a className='text-md text-gray'>Категория 2</a>
-              </Link>
-              <Link href='/category/1'>
-                <a className='text-md text-gray'>Категория 2</a>
-              </Link>
-              <Link href='/category/1'>
-                <a className='text-md text-gray'>Категория 2</a>
-              </Link>
-              <Link href='/category/1'>
-                <a className='text-md text-gray'>Категория 2</a>
-              </Link>
-              <Link href='/category/1'>
-                <a className='text-md text-gray'>Категория 2</a>
-              </Link>
-              <Link href='/category/1'>
-                <a className='text-md text-gray'>Категория 2</a>
-              </Link>
-              <Link href='/category/1'>
-                <a className='text-md text-gray'>Категория 2</a>
-              </Link>
-              <Link href='/category/1'>
-                <a className='text-md text-gray'>Категория 2</a>
-              </Link>
+              {categories?.map(category => (
+                <Link key={category.id} href={`/category/${category.attributes.slug}`}>
+                  <a className='text-md text-gray'>{category.attributes.name}</a>
+                </Link>
+              ))}
             </div>
           </div>
         </Popover.Panel>

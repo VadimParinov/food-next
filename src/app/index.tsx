@@ -7,15 +7,16 @@ import { setCookie } from 'nookies'
 import { i18n } from 'next-i18next'
 import { withProviders } from './providers'
 import { useAfterMountEffect } from '@/shared/hooks'
-import { AppPropsWithLayout } from '@/shared/@types'
 import { Header } from '@/widgets/header'
 import { cartAtom, getCartFromStorage } from '@/entities/cart'
 import { useUpdateAtom } from 'jotai/utils'
+import { AppProps } from 'next/app'
+import { GlobalData } from '@/pages/_app'
 
 NProgress.configure({ showSpinner: false })
 dayjs.locale(ru)
 
-const App = ({ Component, pageProps }: AppPropsWithLayout) => {
+const App = ({ Component, pageProps }: AppProps<GlobalData>) => {
   const router = useRouter()
   const setCart = useUpdateAtom(cartAtom)
 
@@ -35,16 +36,12 @@ const App = ({ Component, pageProps }: AppPropsWithLayout) => {
     i18n?.language && setCookie(null, 'NEXT_LOCALE', i18n.language, { path: '/' })
   }, [i18n])
 
-  const Layout = Component.Layout ?? (({ children }) => <>{children}</>)
-
   return (
     <>
-      <Header />
+      <Header categories={pageProps.globalData.categories.data} />
       <div className='flex flex-col justify-between h-full min-h-screen'>
         <main className='flex flex-col overflow-x-hidden'>
-          <Layout>
-            <Component {...pageProps} />
-          </Layout>
+          <Component {...pageProps} />
         </main>
       </div>
     </>

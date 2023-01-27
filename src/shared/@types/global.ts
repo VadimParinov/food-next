@@ -36,6 +36,38 @@ export interface CollectionResponse<T> {
   totalItems: number
 }
 
+export interface StrapiData<T> {
+  id: number
+  attributes: T
+}
+
+export interface StrapiMeta {
+  pagination: StrapiPagination
+}
+
+export interface StrapiPagination {
+  page: number
+  pageCount: number
+  pageSize: number
+  total: number
+}
+
+export interface Category {
+  id: number
+  attributes: {
+    name: string
+    slug: string
+  }
+}
+
+export interface StrapiResponseCollection<D> {
+  data: StrapiData<D>[]
+  meta: StrapiMeta
+}
+export interface StrapiResponse<D> {
+  data: StrapiData<D>
+}
+
 export interface FileModel extends BaseEntity {
   name: string
   path: string

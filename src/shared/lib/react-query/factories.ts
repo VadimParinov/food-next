@@ -12,7 +12,7 @@ import {
   UseQueryResult,
 } from 'react-query'
 import { httpClient } from '@/shared/lib'
-import { getBetweenFilterValue } from '@/shared/helpers'
+import { normalizeStrapiFilters } from '@/shared/helpers'
 import { ParsedUrlQuery } from 'querystring'
 
 export type CustomQueryKey = unknown[]
@@ -108,23 +108,24 @@ export function queryFactory<Response, FiltersContent = Record<string, unknown>>
     return {
       prefetch: async (queryClient, preBuildFilters = {}, params) => {
         // Сделано под Symphony backend
-        let filtersKey: keyof typeof preBuildFilters
-        for (filtersKey in preBuildFilters) {
-          const value = preBuildFilters[filtersKey] as string
-          if (value) {
-            // eslint-disable-next-line
-            if (/\[\d+\,\d+\]/.test(value)) {
-              preBuildFilters[filtersKey] = getBetweenFilterValue(JSON.parse(value)) as string
-              continue
-            }
-            // eslint-disable-next-line
-            if (/\[[\d+\,?]*\]/.test(value)) {
-              preBuildFilters[filtersKey] = JSON.parse(value)
-            }
-          }
-        }
-
+        //const filtersKey: keyof typeof preBuildFilters = {} as keyof typeof preBuildFilters
+        // for (filtersKey in preBuildFilters) {
+        //   const value = preBuildFilters[filtersKey] as string
+        //   if (value) {
+        //     // eslint-disable-next-line
+        //     if (/\[\d+\,\d+\]/.test(value)) {
+        //       preBuildFilters[filtersKey] = getBetweenFilterValue(JSON.parse(value)) as string
+        //       continue
+        //     }
+        //     // eslint-disable-next-line
+        //     if (/\[[\d+\,?]*\]/.test(value)) {
+        //       preBuildFilters[filtersKey] = JSON.parse(value)
+        //     }
+        //   }
+        // }
         const filters = { ...initialFilters, ...preBuildFilters }
+        // const filtersKey = getObjectWithoutEmptyProperty({...initialFilters, ...preBuildFilters})
+        const filtersStrapi = normalizeStrapiFilters(filters)
 
         // Нужно делать копию, т.к. без нее будет мутация оригинального primaryKey из-за push ниже и react-query будет спамить запросы без остановки
         const key = [...primaryKey, Object.entries(filters).join()] as CustomQueryKey
@@ -133,7 +134,8 @@ export function queryFactory<Response, FiltersContent = Record<string, unknown>>
         serverSideFilters = key
 
         if (type === 'query') {
-          await queryClient.prefetchQuery(key, fetch(config?.(filters) || {}), params as QueryParams<Response>)
+          // @ts-ignore
+          await queryClient.prefetchQuery(key, fetch(config?.(filtersStrapi) || {}), params as QueryParams<Response>)
         } else {
           await queryClient.prefetchInfiniteQuery(
             key,
@@ -147,21 +149,30 @@ export function queryFactory<Response, FiltersContent = Record<string, unknown>>
         }
       },
       useHookInitializer: (currentFitlers, params = {}) => {
+        // parse filters to strapi format
         const filters = { ...initialFilters, ...currentFitlers }
+        // @ts-ignore
+        // const keyFilters = removeDeepNullField({...initialFilters, ...currentFitlers.filters})
+        const filtersStrapi = normalizeStrapiFilters(filters)
 
         // TODO: Нужно протестить, что ключ такого формата не ломает логику react-query
         // Нужно делать копию, т.к. без нее будет мутация оригинального primaryKey из-за push ниже и react-query будет спамить запросы без остановки
         const key = serverSideFilters || ([...primaryKey, Object.entries(filters).join()] as CustomQueryKey)
-
         let response
 
         if (type === 'query') {
+          // @ts-ignore
           // eslint-disable-next-line
-          response = useQuery(key, fetch(config?.(filters) || {}), params as QueryParams<Response>)
+          response = useQuery(key, fetch(config?.(filtersStrapi) || {}), params as QueryParams<Response>)
         } else {
+          // @ts-ignore
           //TODO: Стоит сразу описать getNextPageParam для текущего проекта
           // eslint-disable-next-line
-          response = useInfiniteQuery(key, fetch(config?.(filters) || {}), params as InfiniteQueryParams<Response>)
+          response = useInfiniteQuery(
+            key,
+            fetch(config?.(filtersStrapi) || {}),
+            params as InfiniteQueryParams<Response>
+          )
         }
 
         return {

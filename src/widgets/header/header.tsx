@@ -5,8 +5,13 @@ import { CatalogPopover } from '@/shared/ui'
 import Link from 'next/link'
 import { useAtomValue } from 'jotai'
 import { cartAtom } from '@/entities/cart'
+import { Category } from '@/shared/@types'
 
-export const Header: FC = () => {
+interface HeaderProps {
+  categories: Category[]
+}
+
+export const Header: FC<HeaderProps> = ({ categories }) => {
   const cart = useAtomValue(cartAtom)
   return (
     <header className='sticky top-0 z-20  py-4 w-full flex items-center h-[70px]  bg-surface shadow-lg'>
@@ -18,7 +23,7 @@ export const Header: FC = () => {
               <h2 className='text-2xl font-bold text-gray'>Logo</h2>
             </a>
           </Link>
-          <CatalogPopover />
+          <CatalogPopover categories={categories} />
         </div>
         <div>
           <Link href={'/cart'}>

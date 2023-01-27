@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { parseCookies } from 'nookies'
 import { BASE_URL, TOKEN_PATH } from '@/shared/config'
+import qs from 'qs'
 
 interface Request {
   resolve: (value: unknown) => void
@@ -12,6 +13,11 @@ let requestQueue: Request[] = []
 
 const instance: AxiosInstance = axios.create({
   baseURL: BASE_URL,
+  paramsSerializer: params =>
+    qs.stringify(params, {
+      encodeValuesOnly: true,
+      skipNulls: true,
+    }),
 })
 instance.interceptors.request.use(requestInterceptor)
 
